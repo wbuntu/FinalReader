@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7549" systemVersion="14D136" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Book" representedClassName="Book" syncable="YES">
+        <attribute name="bookId" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="bookName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="volumes" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Volume" inverseName="book" inverseEntity="Volume" syncable="YES"/>
+    </entity>
+    <entity name="Volume" representedClassName="Volume" syncable="YES">
+        <attribute name="volumeData" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="volumeName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="book" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Book" inverseName="volumes" inverseEntity="Book" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Book" positionX="205" positionY="9" width="128" height="90"/>
+        <element name="Volume" positionX="-54" positionY="-9" width="128" height="88"/>
+    </elements>
+</model>
