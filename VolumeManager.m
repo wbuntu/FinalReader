@@ -62,13 +62,16 @@
         _volumeMark = [NSMutableDictionary dictionaryWithContentsOfFile:path];
     else
         _volumeMark = [NSMutableDictionary dictionary];
+    
 }
 -(void)saveContext
 {
-    [_books writeToFile:[_documentPath stringByAppendingPathComponent:@"books"] atomically:NO];
-    [_volumes writeToFile:[_documentPath stringByAppendingPathComponent:@"volumes"] atomically:NO];
-    [_volumeInfo writeToFile:[_documentPath stringByAppendingPathComponent:@"volumeInfo"] atomically:NO];
-    [_volumeMark writeToFile:[_documentPath stringByAppendingPathComponent:@"volumeMark"] atomically:NO];
+    [_books writeToFile:[_documentPath stringByAppendingPathComponent:@"books"] atomically:YES];
+    
+    [_volumes writeToFile:[_documentPath stringByAppendingPathComponent:@"volumes"] atomically:YES];
+    
+    [_volumeInfo writeToFile:[_documentPath stringByAppendingPathComponent:@"volumeInfo"] atomically:YES];
+    [_volumeMark writeToFile:[_documentPath stringByAppendingPathComponent:@"volumeMark"] atomically:YES];
 }
 -(void)createDirectories
 {
@@ -81,13 +84,16 @@
     if (![_manager fileExistsAtPath:[_documentPath stringByAppendingPathComponent:@"localfiles"]]) {
         [_manager createDirectoryAtPath:[_documentPath stringByAppendingPathComponent:@"localfiles"] withIntermediateDirectories:YES attributes:nil error:nil];
     }
+    if (![_manager fileExistsAtPath:[_documentPath stringByAppendingPathComponent:@"pagingResults"]]) {
+        [_manager createDirectoryAtPath:[_documentPath stringByAppendingPathComponent:@"pagingResults"] withIntermediateDirectories:YES attributes:nil error:nil];
+    }
 }
 -(BOOL)saveVolume:(NSString *)volumeIdStr WithVolumeName:(NSString *)volumeName AndFileLocation:(NSURL*)location InBook:(NSString *)bookIdStr WithBookName:(NSString *)bookName isAdded:(BOOL)isAdded
 {
     NSString *path = [_documentPath stringByAppendingPathComponent:@"localfiles"];
     path = [path stringByAppendingPathComponent:volumeIdStr];
     NSData *data = [NSData dataWithContentsOfURL:location];
-    if ([data writeToFile:path atomically:NO])
+    if ([data writeToFile:path atomically:YES])
     {
         if (!isAdded)//若不存在，就添加book
         {
@@ -147,5 +153,11 @@
     [_books removeObjectForKey:bookIdStr];
     [_volumes removeObjectForKey:bookIdStr];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"VolumeAdded" object:nil];
+}
+-(void)addBookmarkWithBookId:(NSString*)volumeIdStr AndCurrntPage:(NSInteger)page
+{
+
+    [_volumeMark setObject:[NSNumber numberWithInteger:page] forKey:volumeIdStr];
+
 }
 @end

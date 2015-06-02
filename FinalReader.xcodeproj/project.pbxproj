@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		DB12807F1AEFD10B00F49BCF /* indexTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB12807D1AEFD10B00F49BCF /* indexTableViewCell.xib */; };
 		DB9B4E461AF1A57200C3CC40 /* VolumeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DB9B4E451AF1A57200C3CC40 /* VolumeManager.m */; };
-		DB9CCAB51AF3D44B002914C3 /* pattern.png in Resources */ = {isa = PBXBuildFile; fileRef = DB9CCAB41AF3D44B002914C3 /* pattern.png */; };
-		DBC435F71AF12F370010A56D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBC435F61AF12F370010A56D /* ViewController.m */; };
 		DBD7B20E1AEFC2AA000494B7 /* ExrtaButton.m in Sources */ = {isa = PBXBuildFile; fileRef = DBD7B1FA1AEFC2AA000494B7 /* ExrtaButton.m */; };
 		DBD7B20F1AEFC2AA000494B7 /* bookElement.m in Sources */ = {isa = PBXBuildFile; fileRef = DBD7B1FC1AEFC2AA000494B7 /* bookElement.m */; };
 		DBD7B2101AEFC2AA000494B7 /* articleDownloadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBD7B1FE1AEFC2AA000494B7 /* articleDownloadViewController.m */; };
@@ -26,6 +24,8 @@
 		DBD7B2221AEFC2CC000494B7 /* parserIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = DBD7B21C1AEFC2CC000494B7 /* parserIndex.m */; };
 		DBD7B2231AEFC2CC000494B7 /* parserArticleinfo.m in Sources */ = {isa = PBXBuildFile; fileRef = DBD7B21E1AEFC2CC000494B7 /* parserArticleinfo.m */; };
 		DBD7B2241AEFC2CC000494B7 /* parserDownloadpage.m in Sources */ = {isa = PBXBuildFile; fileRef = DBD7B2201AEFC2CC000494B7 /* parserDownloadpage.m */; };
+		DBF74CED1B1DFD4600F0470B /* CAReaderVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF74CEC1B1DFD4600F0470B /* CAReaderVC.m */; };
+		DBF74CF01B1DFD6200F0470B /* CAReaderLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF74CEF1B1DFD6200F0470B /* CAReaderLayer.m */; };
 		DBFFA0201AEFB85D00352410 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DBFFA01F1AEFB85D00352410 /* main.m */; };
 		DBFFA0231AEFB85D00352410 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DBFFA0221AEFB85D00352410 /* AppDelegate.m */; };
 		DBFFA0291AEFB85D00352410 /* ShelfVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DBFFA0281AEFB85D00352410 /* ShelfVC.m */; };
@@ -50,9 +50,6 @@
 		DB12807D1AEFD10B00F49BCF /* indexTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = indexTableViewCell.xib; sourceTree = "<group>"; };
 		DB9B4E441AF1A57200C3CC40 /* VolumeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VolumeManager.h; sourceTree = "<group>"; };
 		DB9B4E451AF1A57200C3CC40 /* VolumeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VolumeManager.m; sourceTree = "<group>"; };
-		DB9CCAB41AF3D44B002914C3 /* pattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pattern.png; sourceTree = "<group>"; };
-		DBC435F51AF12F370010A56D /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		DBC435F61AF12F370010A56D /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		DBD7B1F91AEFC2AA000494B7 /* ExrtaButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExrtaButton.h; sourceTree = "<group>"; };
 		DBD7B1FA1AEFC2AA000494B7 /* ExrtaButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExrtaButton.m; sourceTree = "<group>"; };
 		DBD7B1FB1AEFC2AA000494B7 /* bookElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bookElement.h; sourceTree = "<group>"; };
@@ -82,6 +79,10 @@
 		DBD7B21E1AEFC2CC000494B7 /* parserArticleinfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = parserArticleinfo.m; sourceTree = "<group>"; };
 		DBD7B21F1AEFC2CC000494B7 /* parserDownloadpage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = parserDownloadpage.h; sourceTree = "<group>"; };
 		DBD7B2201AEFC2CC000494B7 /* parserDownloadpage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = parserDownloadpage.m; sourceTree = "<group>"; };
+		DBF74CEB1B1DFD4600F0470B /* CAReaderVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAReaderVC.h; sourceTree = "<group>"; };
+		DBF74CEC1B1DFD4600F0470B /* CAReaderVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CAReaderVC.m; sourceTree = "<group>"; };
+		DBF74CEE1B1DFD6200F0470B /* CAReaderLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAReaderLayer.h; sourceTree = "<group>"; };
+		DBF74CEF1B1DFD6200F0470B /* CAReaderLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CAReaderLayer.m; sourceTree = "<group>"; };
 		DBFFA01A1AEFB85D00352410 /* FinalReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FinalReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBFFA01E1AEFB85D00352410 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DBFFA01F1AEFB85D00352410 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -135,6 +136,10 @@
 		DBFFA0111AEFB85D00352410 = {
 			isa = PBXGroup;
 			children = (
+				DBF74CEE1B1DFD6200F0470B /* CAReaderLayer.h */,
+				DBF74CEF1B1DFD6200F0470B /* CAReaderLayer.m */,
+				DBF74CEB1B1DFD4600F0470B /* CAReaderVC.h */,
+				DBF74CEC1B1DFD4600F0470B /* CAReaderVC.m */,
 				DB9B4E441AF1A57200C3CC40 /* VolumeManager.h */,
 				DB9B4E451AF1A57200C3CC40 /* VolumeManager.m */,
 				DBD7B2251AEFC2E6000494B7 /* parser */,
@@ -174,8 +179,6 @@
 				DBFFA0281AEFB85D00352410 /* ShelfVC.m */,
 				DBFFA04C1AEFBE1F00352410 /* LocalFileVC.h */,
 				DBFFA04D1AEFBE1F00352410 /* LocalFileVC.m */,
-				DBC435F51AF12F370010A56D /* ViewController.h */,
-				DBC435F61AF12F370010A56D /* ViewController.m */,
 				DBD7B2061AEFC2AA000494B7 /* wenku8VC.h */,
 				DBD7B2071AEFC2AA000494B7 /* wenku8VC.m */,
 				DBD7B20C1AEFC2AA000494B7 /* SearchVC.h */,
@@ -197,7 +200,6 @@
 		DBFFA01D1AEFB85D00352410 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				DB9CCAB41AF3D44B002914C3 /* pattern.png */,
 				DBFFA01E1AEFB85D00352410 /* Info.plist */,
 				DBFFA01F1AEFB85D00352410 /* main.m */,
 			);
@@ -303,7 +305,6 @@
 			files = (
 				DBFFA02C1AEFB85D00352410 /* Main.storyboard in Resources */,
 				DB12807F1AEFD10B00F49BCF /* indexTableViewCell.xib in Resources */,
-				DB9CCAB51AF3D44B002914C3 /* pattern.png in Resources */,
 				DBFFA0311AEFB85D00352410 /* LaunchScreen.xib in Resources */,
 				DBD7B2121AEFC2AA000494B7 /* downloadpageTableViewCell.xib in Resources */,
 				DBFFA02E1AEFB85D00352410 /* Images.xcassets in Resources */,
@@ -332,7 +333,6 @@
 				DBD7B20F1AEFC2AA000494B7 /* bookElement.m in Sources */,
 				DBFFA0231AEFB85D00352410 /* AppDelegate.m in Sources */,
 				DBD7B2151AEFC2AA000494B7 /* wenku8VC.m in Sources */,
-				DBC435F71AF12F370010A56D /* ViewController.m in Sources */,
 				DBD7B2181AEFC2AA000494B7 /* SearchVC.m in Sources */,
 				DBD7B2171AEFC2AA000494B7 /* indexTableViewCell.m in Sources */,
 				DBD7B2111AEFC2AA000494B7 /* downloadpageTableViewCell.m in Sources */,
@@ -343,7 +343,9 @@
 				DBD7B2131AEFC2AA000494B7 /* ShelfTVCCellCollectionViewCell.m in Sources */,
 				DB9B4E461AF1A57200C3CC40 /* VolumeManager.m in Sources */,
 				DBFFA0201AEFB85D00352410 /* main.m in Sources */,
+				DBF74CF01B1DFD6200F0470B /* CAReaderLayer.m in Sources */,
 				DBD7B2211AEFC2CC000494B7 /* parserSearchView.m in Sources */,
+				DBF74CED1B1DFD4600F0470B /* CAReaderVC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

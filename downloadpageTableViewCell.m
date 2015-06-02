@@ -8,7 +8,6 @@
 
 #import "downloadpageTableViewCell.h"
 #import "VolumeManager.h"
-#import "ViewController.h"
 @interface downloadpageTableViewCell ()
 @end
 

@@ -18,7 +18,6 @@
 -(void)isVolume:(NSString *)volumeIdStr InBook:(NSString *)bookIdStr ExistInCell:(downloadpageTableViewCell*)cell;
 -(void)removeVolume:(NSString *)volumeIdStr InBook:(NSString *)bookIdStr;
 -(void)removeBook:(NSString *)bookIdStr;
-
-
+-(void)addBookmarkWithBookId:(NSString*)volumeIdStr AndCurrntPage:(NSInteger)page;
 +(VolumeManager*)defaultManager;
 @end

@@ -7,10 +7,11 @@
 //
 
 #import "LocalFileVC.h"
-#import "ViewController.h"
+#import "CAReaderVC.h"
 #import "VolumeManager.h"
 @interface LocalFileVC ()
 @property(nonatomic,strong) NSArray *volumeArray;
+@property(nonatomic,strong) CAReaderVC *vc;
 @end
 
 @implementation LocalFileVC
@@ -74,13 +75,15 @@ static NSString *identifier = @"cell";
     NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
     path = [path stringByAppendingString:[NSString stringWithFormat:@"/localfiles/%@",key]];
 //    NSLog(@"%@",path);
-    ViewController *vc = [[ViewController alloc] init];
-    vc.path = path;
-    vc.isHidden=YES;
+    if (_vc==nil) {
+        _vc = [[CAReaderVC alloc] init];
+    }
+    _vc.path = path;
+    _vc.isStatusBarHidden = YES;
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = item;
     [self.navigationController setNavigationBarHidden:YES animated:NO];
-    [self.navigationController pushViewController:vc animated:YES];
+    [self.navigationController pushViewController:_vc animated:YES];
 }
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete)

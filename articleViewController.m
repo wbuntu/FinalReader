@@ -81,7 +81,7 @@
     NSDictionary *dic = @{@"intro":_intro,@"author":_author,@"classtype":_classType,@"height":[NSNumber numberWithFloat:_height]};
     NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
     path = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"articleInfo/%d",_bookId]];
-    [dic writeToFile:path atomically:NO];
+    [dic writeToFile:path atomically:YES];
     dispatch_async(dispatch_get_main_queue(), ^{
         [_indicator stopAnimating];
         [self.tableView reloadData];

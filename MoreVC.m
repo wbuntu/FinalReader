@@ -118,7 +118,7 @@ static NSString *identifier = @"reuseIdentifier";
             NSURL *url = [NSURL URLWithString:bookImage];
             NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:5];
             [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-                [data writeToFile:path atomically:NO];
+                [data writeToFile:path atomically:YES];
                 UIImage *im = [UIImage imageWithContentsOfFile:path];
                 //opaque：NO 不透明
                 UIGraphicsBeginImageContextWithOptions(CGSizeMake(60, 90), NO, 0.0);

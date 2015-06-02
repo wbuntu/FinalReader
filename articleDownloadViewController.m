@@ -10,10 +10,11 @@
 #import "parserDownloadpage.h"
 #import "downloadpageTableViewCell.h"
 #import "VolumeManager.h"
-#import "ViewController.h"
+#import "CAReaderVC.h"
 @interface articleDownloadViewController ()
 @property (nonatomic,strong) NSArray *bookArray;
 @property(nonatomic,strong) UIActivityIndicatorView *indicator;
+@property(nonatomic,strong) CAReaderVC *vc;
 @end
 
 @implementation articleDownloadViewController
@@ -107,13 +108,15 @@
     NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];;
     path = [path stringByAppendingString:[NSString stringWithFormat:@"/localfiles/%d",cell.volumeId]];
 //    NSLog(@"%@",path);
-    ViewController *vc = [[ViewController alloc] init];
-    vc.path = path;
-    vc.isHidden=YES;
+    if (_vc==nil) {
+        _vc = [[CAReaderVC alloc] init];
+    }
+    _vc.path = path;
+    _vc.isStatusBarHidden = YES;
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = item;
     [self.navigationController setNavigationBarHidden:YES animated:NO];
-    [self.navigationController pushViewController:vc animated:YES];
+    [self.navigationController pushViewController:_vc animated:YES];
 }
 
 @end
