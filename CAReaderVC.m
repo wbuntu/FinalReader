@@ -30,7 +30,7 @@
     _indicator = [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame)-40, CGRectGetMidY(self.view.frame)-40, 80, 80)];
     _indicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
     [self.view addSubview:_indicator];
-    _ViewToD = [[CAReaderLayer alloc] initWithFrame:CGRectMake(5, 8, 310, 560)];
+    _ViewToD = [[CAReaderLayer alloc] initWithFrame:CGRectMake(5, 4, 310, 560)];
     [self.view.layer addSublayer:_ViewToD];
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapSelector:)];
     [self.view addGestureRecognizer:tap];

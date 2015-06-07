@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		DB12807F1AEFD10B00F49BCF /* indexTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB12807D1AEFD10B00F49BCF /* indexTableViewCell.xib */; };
 		DB9B4E461AF1A57200C3CC40 /* VolumeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DB9B4E451AF1A57200C3CC40 /* VolumeManager.m */; };
+		DBC160C61B243FE3008CAD68 /* pattern.png in Resources */ = {isa = PBXBuildFile; fileRef = DBC160C51B243FE3008CAD68 /* pattern.png */; };
 		DBD7B20E1AEFC2AA000494B7 /* ExrtaButton.m in Sources */ = {isa = PBXBuildFile; fileRef = DBD7B1FA1AEFC2AA000494B7 /* ExrtaButton.m */; };
 		DBD7B20F1AEFC2AA000494B7 /* bookElement.m in Sources */ = {isa = PBXBuildFile; fileRef = DBD7B1FC1AEFC2AA000494B7 /* bookElement.m */; };
 		DBD7B2101AEFC2AA000494B7 /* articleDownloadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBD7B1FE1AEFC2AA000494B7 /* articleDownloadViewController.m */; };
@@ -50,6 +51,7 @@
 		DB12807D1AEFD10B00F49BCF /* indexTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = indexTableViewCell.xib; sourceTree = "<group>"; };
 		DB9B4E441AF1A57200C3CC40 /* VolumeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VolumeManager.h; sourceTree = "<group>"; };
 		DB9B4E451AF1A57200C3CC40 /* VolumeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VolumeManager.m; sourceTree = "<group>"; };
+		DBC160C51B243FE3008CAD68 /* pattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pattern.png; sourceTree = "<group>"; };
 		DBD7B1F91AEFC2AA000494B7 /* ExrtaButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExrtaButton.h; sourceTree = "<group>"; };
 		DBD7B1FA1AEFC2AA000494B7 /* ExrtaButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExrtaButton.m; sourceTree = "<group>"; };
 		DBD7B1FB1AEFC2AA000494B7 /* bookElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bookElement.h; sourceTree = "<group>"; };
@@ -200,6 +202,7 @@
 		DBFFA01D1AEFB85D00352410 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				DBC160C51B243FE3008CAD68 /* pattern.png */,
 				DBFFA01E1AEFB85D00352410 /* Info.plist */,
 				DBFFA01F1AEFB85D00352410 /* main.m */,
 			);
@@ -305,6 +308,7 @@
 			files = (
 				DBFFA02C1AEFB85D00352410 /* Main.storyboard in Resources */,
 				DB12807F1AEFD10B00F49BCF /* indexTableViewCell.xib in Resources */,
+				DBC160C61B243FE3008CAD68 /* pattern.png in Resources */,
 				DBFFA0311AEFB85D00352410 /* LaunchScreen.xib in Resources */,
 				DBD7B2121AEFC2AA000494B7 /* downloadpageTableViewCell.xib in Resources */,
 				DBFFA02E1AEFB85D00352410 /* Images.xcassets in Resources */,

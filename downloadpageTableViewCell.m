@@ -21,11 +21,11 @@
 {
     [super layoutSubviews];
     if (_isDownloaded) {
-        [self.downloadButton setTitle:@"阅读" forState:UIControlStateNormal];
+        [_downloadButton setTitle:@"阅读" forState:UIControlStateNormal];
 //        [self.downloadButton addTarget:self action:@selector(readBook) forControlEvents:UIControlEventTouchUpInside];
     }
     else
-        [self.downloadButton addTarget:self action:@selector(downloadTxt) forControlEvents:UIControlEventTouchUpInside];
+        [_downloadButton addTarget:self action:@selector(downloadTxt) forControlEvents:UIControlEventTouchUpInside];
     [_bookTitleLable setText:_title];
 }
 
@@ -37,12 +37,12 @@
 
 - (void)downloadTxt
 {
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:nil];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
     NSURL *url = [NSURL URLWithString:_link];
     NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:5.0];
     CGSize size = self.contentView.frame.size;
-    self.downloadingProgressView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, size.height-5, size.width, 5)];
-    [self addSubview:self.downloadingProgressView];
+    _downloadingProgressView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, size.height-5, size.width, 5)];
+    [self addSubview:_downloadingProgressView];
     NSURLSessionDownloadTask *download = [session downloadTaskWithRequest:request];
     [download resume];
 }
@@ -54,9 +54,9 @@ didFinishDownloadingToURL:(NSURL *)location
     [manager saveVolume:[NSString stringWithFormat:@"%d",_volumeId] WithVolumeName:_title AndFileLocation:location InBook:[NSString stringWithFormat:@"%d",_bookId] WithBookName:_bookName isAdded:_isAdded];
     _isDownloaded = YES;
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.downloadingProgressView removeFromSuperview];
-        [self.downloadButton removeTarget:self action:@selector(downloadTxt) forControlEvents:UIControlEventTouchUpInside];
-        [self.downloadButton setTitle:@"阅读" forState:UIControlStateNormal];
+        [_downloadingProgressView removeFromSuperview];
+        [_downloadButton removeTarget:self action:@selector(downloadTxt) forControlEvents:UIControlEventTouchUpInside];
+        [_downloadButton setTitle:@"阅读" forState:UIControlStateNormal];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"buttonChanged" object:nil];
     });
 }
@@ -71,7 +71,7 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite // 期望收到的�
     double downloadProgress = totalBytesWritten / (double)totalBytesExpectedToWrite;
    // NSLog(@"进度:%f",downloadProgress);
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.downloadingProgressView setProgress:downloadProgress animated:YES];
+        [_downloadingProgressView setProgress:downloadProgress animated:YES];
     });
 }
 @end
