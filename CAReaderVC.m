@@ -45,7 +45,7 @@
         bgColor = bg.integerValue;
     else
         bgColor = 1;
-    UIImage *im = [UIImage imageNamed:[NSString stringWithFormat:@"reading_bg%d.png",bgColor]];
+    UIImage *im = [UIImage imageNamed:[NSString stringWithFormat:@"reading_bg%ld.png",(long)bgColor]];
     UIGraphicsBeginImageContextWithOptions(CGSizeMake(320, 568), NO, 0.0);
     [im drawAsPatternInRect:CGRectMake(0, 0, 320, 568)];
     im = UIGraphicsGetImageFromCurrentImageContext();
@@ -64,7 +64,7 @@
 {
     if ([keyPath isEqualToString:@"bgColor"])
     {
-        UIImage *im = [UIImage imageNamed:[NSString stringWithFormat:@"reading_bg%d.png",_pannel.bgColor]];
+        UIImage *im = [UIImage imageNamed:[NSString stringWithFormat:@"reading_bg%ld.png",(long)_pannel.bgColor]];
         UIGraphicsBeginImageContextWithOptions(CGSizeMake(320, 568), NO, 0.0);
         [im drawAsPatternInRect:CGRectMake(0, 0, 320, 568)];
         im = UIGraphicsGetImageFromCurrentImageContext();
@@ -191,6 +191,14 @@
             NSRange ra = NSRangeFromString(_pagingResult[_currentPage]);
             [_ViewToD setNewStr:[self.attString attributedSubstringFromRange:ra]];
         }
+        if(!self.navigationController.isNavigationBarHidden)
+        {
+            [self.navigationController setNavigationBarHidden:YES animated:YES];
+            _pannel.center = CGPointMake(160, 614);
+            _isStatusBarHidden=!_isStatusBarHidden;
+            [self setNeedsStatusBarAppearanceUpdate];
+            
+        }
     }
     else if(p.x<center.x-50)
     {
@@ -199,7 +207,14 @@
             NSRange ra = NSRangeFromString(_pagingResult[_currentPage]);
             [_ViewToD setNewStr:[self.attString attributedSubstringFromRange:ra]];
         }
-        
+        if(!self.navigationController.isNavigationBarHidden)
+        {
+            [self.navigationController setNavigationBarHidden:YES animated:YES];
+            _pannel.center = CGPointMake(160, 614);
+            _isStatusBarHidden=!_isStatusBarHidden;
+            [self setNeedsStatusBarAppearanceUpdate];
+            
+        }
     }
     else
     {

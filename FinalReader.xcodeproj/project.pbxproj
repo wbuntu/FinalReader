@@ -131,7 +131,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		DBD7B2251AEFC2E6000494B7 /* parser */ = {
+		DBD7B2251AEFC2E6000494B7 /* 网页解析 */ = {
 			isa = PBXGroup;
 			children = (
 				DBD7B2191AEFC2CC000494B7 /* parserSearchView.h */,
@@ -143,10 +143,11 @@
 				DBD7B21F1AEFC2CC000494B7 /* parserDownloadpage.h */,
 				DBD7B2201AEFC2CC000494B7 /* parserDownloadpage.m */,
 			);
-			name = parser;
+			name = "网页解析";
+			path = ..;
 			sourceTree = "<group>";
 		};
-		DBFFA0111AEFB85D00352410 = {
+		DBEF19FE1B25CABF00C5C7A0 /* 阅读器 */ = {
 			isa = PBXGroup;
 			children = (
 				DBF74CEE1B1DFD6200F0470B /* CAReaderLayer.h */,
@@ -155,13 +156,14 @@
 				DBF74CEC1B1DFD4600F0470B /* CAReaderVC.m */,
 				DB6CE1141B251E4F00F9484E /* CAReaderPannel.h */,
 				DB6CE1151B251E4F00F9484E /* CAReaderPannel.m */,
-				DB9B4E441AF1A57200C3CC40 /* VolumeManager.h */,
-				DB9B4E451AF1A57200C3CC40 /* VolumeManager.m */,
-				DBD7B2251AEFC2E6000494B7 /* parser */,
-				DBD7B1F91AEFC2AA000494B7 /* ExrtaButton.h */,
-				DBD7B1FA1AEFC2AA000494B7 /* ExrtaButton.m */,
-				DBD7B1FB1AEFC2AA000494B7 /* bookElement.h */,
-				DBD7B1FC1AEFC2AA000494B7 /* bookElement.m */,
+			);
+			name = "阅读器";
+			path = ..;
+			sourceTree = "<group>";
+		};
+		DBEF19FF1B25CACD00C5C7A0 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
 				DBD7B1FF1AEFC2AA000494B7 /* downloadpageTableViewCell.h */,
 				DBD7B2001AEFC2AA000494B7 /* downloadpageTableViewCell.m */,
 				DBD7B2011AEFC2AA000494B7 /* downloadpageTableViewCell.xib */,
@@ -170,6 +172,49 @@
 				DB12807D1AEFD10B00F49BCF /* indexTableViewCell.xib */,
 				DBD7B20A1AEFC2AA000494B7 /* indexTableViewCell.h */,
 				DBD7B20B1AEFC2AA000494B7 /* indexTableViewCell.m */,
+			);
+			name = Cell;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		DBEF1A001B25CADA00C5C7A0 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				DBFFA0271AEFB85D00352410 /* ShelfVC.h */,
+				DBFFA0281AEFB85D00352410 /* ShelfVC.m */,
+				DBFFA04C1AEFBE1F00352410 /* LocalFileVC.h */,
+				DBFFA04D1AEFBE1F00352410 /* LocalFileVC.m */,
+				DBD7B2061AEFC2AA000494B7 /* wenku8VC.h */,
+				DBD7B2071AEFC2AA000494B7 /* wenku8VC.m */,
+				DBD7B20C1AEFC2AA000494B7 /* SearchVC.h */,
+				DBD7B20D1AEFC2AA000494B7 /* SearchVC.m */,
+				DBD7B2081AEFC2AA000494B7 /* MoreVC.h */,
+				DBD7B2091AEFC2AA000494B7 /* MoreVC.m */,
+				DBD7B2041AEFC2AA000494B7 /* articleViewController.h */,
+				DBD7B2051AEFC2AA000494B7 /* articleViewController.m */,
+				DBD7B1FD1AEFC2AA000494B7 /* articleDownloadViewController.h */,
+				DBD7B1FE1AEFC2AA000494B7 /* articleDownloadViewController.m */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		DBEF1A011B25CAF400C5C7A0 /* 其他 */ = {
+			isa = PBXGroup;
+			children = (
+				DB9B4E441AF1A57200C3CC40 /* VolumeManager.h */,
+				DB9B4E451AF1A57200C3CC40 /* VolumeManager.m */,
+				DBD7B1F91AEFC2AA000494B7 /* ExrtaButton.h */,
+				DBD7B1FA1AEFC2AA000494B7 /* ExrtaButton.m */,
+				DBD7B1FB1AEFC2AA000494B7 /* bookElement.h */,
+				DBD7B1FC1AEFC2AA000494B7 /* bookElement.m */,
+			);
+			name = "其他";
+			path = ..;
+			sourceTree = "<group>";
+		};
+		DBFFA0111AEFB85D00352410 = {
+			isa = PBXGroup;
+			children = (
 				DBFFA01C1AEFB85D00352410 /* FinalReader */,
 				DBFFA0391AEFB85D00352410 /* FinalReaderTests */,
 				DBFFA01B1AEFB85D00352410 /* Products */,
@@ -188,22 +233,13 @@
 		DBFFA01C1AEFB85D00352410 /* FinalReader */ = {
 			isa = PBXGroup;
 			children = (
+				DBEF1A011B25CAF400C5C7A0 /* 其他 */,
+				DBEF19FE1B25CABF00C5C7A0 /* 阅读器 */,
+				DBD7B2251AEFC2E6000494B7 /* 网页解析 */,
+				DBEF1A001B25CADA00C5C7A0 /* ViewControllers */,
+				DBEF19FF1B25CACD00C5C7A0 /* Cell */,
 				DBFFA0211AEFB85D00352410 /* AppDelegate.h */,
 				DBFFA0221AEFB85D00352410 /* AppDelegate.m */,
-				DBFFA0271AEFB85D00352410 /* ShelfVC.h */,
-				DBFFA0281AEFB85D00352410 /* ShelfVC.m */,
-				DBFFA04C1AEFBE1F00352410 /* LocalFileVC.h */,
-				DBFFA04D1AEFBE1F00352410 /* LocalFileVC.m */,
-				DBD7B2061AEFC2AA000494B7 /* wenku8VC.h */,
-				DBD7B2071AEFC2AA000494B7 /* wenku8VC.m */,
-				DBD7B20C1AEFC2AA000494B7 /* SearchVC.h */,
-				DBD7B20D1AEFC2AA000494B7 /* SearchVC.m */,
-				DBD7B2081AEFC2AA000494B7 /* MoreVC.h */,
-				DBD7B2091AEFC2AA000494B7 /* MoreVC.m */,
-				DBD7B2041AEFC2AA000494B7 /* articleViewController.h */,
-				DBD7B2051AEFC2AA000494B7 /* articleViewController.m */,
-				DBD7B1FD1AEFC2AA000494B7 /* articleDownloadViewController.h */,
-				DBD7B1FE1AEFC2AA000494B7 /* articleDownloadViewController.m */,
 				DBFFA02A1AEFB85D00352410 /* Main.storyboard */,
 				DBFFA02D1AEFB85D00352410 /* Images.xcassets */,
 				DBFFA02F1AEFB85D00352410 /* LaunchScreen.xib */,

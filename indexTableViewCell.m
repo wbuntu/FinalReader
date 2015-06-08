@@ -35,7 +35,13 @@
 
 @end
 @implementation indexTableViewCell
-
+-(void)awakeFromNib
+{
+    [super awakeFromNib];
+    _cover.layer.shadowOffset = CGSizeMake(2, 2);
+    _cover.layer.shadowColor = [UIColor blackColor].CGColor;
+    _cover.layer.shadowOpacity = 0.9;
+}
 -(void)setCellWithBook:(bookElement*)book
 {
     int bookId = book.bookId;
