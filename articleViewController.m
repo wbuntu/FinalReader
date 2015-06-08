@@ -115,8 +115,11 @@
             NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
             path = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"cover/%ds.jpg",_bookId]];
             imageView.image = [UIImage imageWithContentsOfFile:path];
-            imageView.layer.cornerRadius = 6.0f;
-            imageView.layer.masksToBounds = YES;
+//            imageView.layer.cornerRadius = 6.0f;
+//            imageView.layer.masksToBounds = YES;
+            imageView.layer.shadowOffset = CGSizeMake(2, 2);
+            imageView.layer.shadowColor = [UIColor blackColor].CGColor;
+            imageView.layer.shadowOpacity = 0.9f;
             UILabel *title = [[UILabel alloc] initWithFrame:CGRectZero];
             CGSize labelSize = [_bookTitle boundingRectWithSize:CGSizeMake(196, 100) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil].size;
             labelSize.width=ceil(labelSize.width);

@@ -96,7 +96,7 @@ static NSString *identifier = @"cell";
             dispatch_async(dispatch_get_global_queue(0, 0), ^{
                 UIImage *im = [UIImage imageWithContentsOfFile:path];
                 //opaque：NO 不透明
-                UIGraphicsBeginImageContextWithOptions(CGSizeMake(78, 117), NO, 0.0);
+                UIGraphicsBeginImageContextWithOptions(CGSizeMake(78, 117), NO, 0.0);                
                 [im drawInRect:CGRectMake(0, 0, 78, 117)];
                 UIImage *other = UIGraphicsGetImageFromCurrentImageContext();
                 UIGraphicsEndImageContext();

@@ -7,6 +7,7 @@
 //
 #import "CAReaderVC.h"
 #import "CAReaderLayer.h"
+#import "CAReaderPannel.h"
 #import <CoreText/CoreText.h>
 #import "VolumeManager.h"
 @interface CAReaderVC()
@@ -15,10 +16,12 @@
 @property(nonatomic,assign) NSInteger currentPage;
 @property(nonatomic,strong) UIActivityIndicatorView *indicator;
 @property(nonatomic,strong) NSMutableArray *pagingResult;
-@property(nonatomic,strong) NSAttributedString *attString;
+@property(nonatomic,strong) NSMutableAttributedString *attString;
 @property(nonatomic,strong) NSString *pagingResultPath;
 @property(nonatomic,strong) NSString *bookPath;
 @property(nonatomic,assign) BOOL isNewBook;
+@property(nonatomic,strong) UIImageView *bgView;
+@property(nonatomic,strong) CAReaderPannel *pannel;
 @end
 
 @implementation CAReaderVC
@@ -30,16 +33,50 @@
     _indicator = [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame)-40, CGRectGetMidY(self.view.frame)-40, 80, 80)];
     _indicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
     [self.view addSubview:_indicator];
+    _bgView = [[UIImageView alloc] initWithFrame:self.view.frame];
+    [self.view addSubview:_bgView];
+    
     _ViewToD = [[CAReaderLayer alloc] initWithFrame:CGRectMake(5, 4, 310, 560)];
     [self.view.layer addSublayer:_ViewToD];
+    
+    NSNumber *bg = [[NSUserDefaults standardUserDefaults] objectForKey:@"bgColor"];
+    NSInteger bgColor;
+    if (bg)
+        bgColor = bg.integerValue;
+    else
+        bgColor = 1;
+    UIImage *im = [UIImage imageNamed:[NSString stringWithFormat:@"reading_bg%d.png",bgColor]];
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(320, 568), NO, 0.0);
+    [im drawAsPatternInRect:CGRectMake(0, 0, 320, 568)];
+    im = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    _bgView.image = im;
+    _pannel = [[CAReaderPannel alloc] initWithFrame:CGRectMake(0, 476, 320, 92) Andbg:bgColor Andfs:16];
+    [self.view addSubview:_pannel];
+    
+    [_pannel addObserver:self forKeyPath:@"bgColor" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+    
+    
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapSelector:)];
     [self.view addGestureRecognizer:tap];
 }
-
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ([keyPath isEqualToString:@"bgColor"])
+    {
+        UIImage *im = [UIImage imageNamed:[NSString stringWithFormat:@"reading_bg%d.png",_pannel.bgColor]];
+        UIGraphicsBeginImageContextWithOptions(CGSizeMake(320, 568), NO, 0.0);
+        [im drawAsPatternInRect:CGRectMake(0, 0, 320, 568)];
+        im = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        _bgView.image = im;
+    }
+}
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [_indicator startAnimating];
+    _pannel.center = CGPointMake(160, 614);
     [self showBookWithPath:_path];
 }
 
@@ -47,6 +84,7 @@
 {
     [super viewWillDisappear:animated];
     _ViewToD.contents = nil;
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:_pannel.bgColor] forKey:@"bgColor"];
     [[VolumeManager defaultManager] addBookmarkWithBookId:[_bookPath lastPathComponent] AndCurrntPage:_currentPage];
 }
 #pragma mark -- 懒加载
@@ -57,7 +95,7 @@
         NSString *aText = [NSString stringWithContentsOfFile:_bookPath encoding:gbk error:nil];
         NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
         style.lineSpacing = 0.0f;
-        _attString = [[NSAttributedString alloc] initWithString:aText attributes:@{NSFontAttributeName:[UIFont fontWithName:@"STHeitiSC-Light" size:16],NSParagraphStyleAttributeName:style}];
+        _attString = [[NSMutableAttributedString alloc] initWithString:aText attributes:@{NSFontAttributeName:[UIFont fontWithName:@"STHeitiSC-Light" size:16],NSParagraphStyleAttributeName:style}];
     }
     return _attString;
 }
@@ -168,6 +206,10 @@
         [UIView animateWithDuration:0.2 animations:^{
             BOOL isHidedn = !self.navigationController.isNavigationBarHidden;
             [self.navigationController setNavigationBarHidden:isHidedn animated:YES];
+            if (isHidedn)
+                _pannel.center = CGPointMake(160, 614);
+            else
+                _pannel.center = CGPointMake(160,522);
             _isStatusBarHidden=!_isStatusBarHidden;
             [self setNeedsStatusBarAppearanceUpdate];
         }];
@@ -177,5 +219,9 @@
 -(BOOL)prefersStatusBarHidden
 {
     return _isStatusBarHidden;
+}
+-(void)dealloc
+{
+    [_pannel removeObserver:self forKeyPath:@"bgColor"];
 }
 @end
