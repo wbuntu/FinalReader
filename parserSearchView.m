@@ -19,7 +19,6 @@
 @implementation parserSearchView
 - (void)parserDidStartDocument:(NSXMLParser *)parser
 {
-    //NSLog(@"start paersing");
     _indexArray = [[NSMutableArray alloc] init];
 
 }

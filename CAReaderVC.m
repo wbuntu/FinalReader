@@ -20,7 +20,6 @@
 @property(nonatomic,strong) NSString *pagingResultPath;
 @property(nonatomic,strong) NSString *bookPath;
 @property(nonatomic,assign) BOOL isNewBook;
-@property(nonatomic,strong) UIImageView *bgView;
 @property(nonatomic,strong) CAReaderPannel *pannel;
 @end
 
@@ -33,8 +32,6 @@
     _indicator = [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame)-40, CGRectGetMidY(self.view.frame)-40, 80, 80)];
     _indicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
     [self.view addSubview:_indicator];
-    _bgView = [[UIImageView alloc] initWithFrame:self.view.frame];
-    [self.view addSubview:_bgView];
     
     _ViewToD = [[CAReaderLayer alloc] initWithFrame:CGRectMake(5, 4, 310, 560)];
     [self.view.layer addSublayer:_ViewToD];
@@ -45,12 +42,8 @@
         bgColor = bg.integerValue;
     else
         bgColor = 1;
-    UIImage *im = [UIImage imageNamed:[NSString stringWithFormat:@"reading_bg%ld.png",(long)bgColor]];
-    UIGraphicsBeginImageContextWithOptions(CGSizeMake(320, 568), NO, 0.0);
-    [im drawAsPatternInRect:CGRectMake(0, 0, 320, 568)];
-    im = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    _bgView.image = im;
+    [self drawNewBgWith:bgColor];
+    
     _pannel = [[CAReaderPannel alloc] initWithFrame:CGRectMake(0, 476, 320, 92) Andbg:bgColor Andfs:16];
     [self.view addSubview:_pannel];
     
@@ -60,16 +53,19 @@
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapSelector:)];
     [self.view addGestureRecognizer:tap];
 }
+-(void)drawNewBgWith:(NSInteger)bg
+{
+    UIImage *im = [UIImage imageNamed:[NSString stringWithFormat:@"reading_bg%ld.png",(long)bg]];
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(320, 568), NO, 0.0);
+    [im drawAsPatternInRect:CGRectMake(0, 0, 320, 568)];
+    self.view.layer.contents = (__bridge id)(CGBitmapContextCreateImage(UIGraphicsGetCurrentContext()));
+    UIGraphicsEndImageContext();
+}
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     if ([keyPath isEqualToString:@"bgColor"])
     {
-        UIImage *im = [UIImage imageNamed:[NSString stringWithFormat:@"reading_bg%ld.png",(long)_pannel.bgColor]];
-        UIGraphicsBeginImageContextWithOptions(CGSizeMake(320, 568), NO, 0.0);
-        [im drawAsPatternInRect:CGRectMake(0, 0, 320, 568)];
-        im = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        _bgView.image = im;
+        [self drawNewBgWith:(long)_pannel.bgColor];
     }
 }
 -(void)viewWillAppear:(BOOL)animated
