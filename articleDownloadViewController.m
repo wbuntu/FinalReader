@@ -37,7 +37,7 @@
 
 -(void)getDownloadListAndParse
 {
-    NSString *downloadLink = [NSString stringWithFormat:@"http://www.wenku8.cn/wap/article/packtxt.php?id=%d",_bookId];
+    NSString *downloadLink = [NSString stringWithFormat:@"http://www.wenku8.com/wap/article/packtxt.php?id=%d",_bookId];
    // NSLog(@"%@",downloadLink);
     NSURL *url = [NSURL URLWithString:downloadLink];
     

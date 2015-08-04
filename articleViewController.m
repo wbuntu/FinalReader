@@ -50,7 +50,7 @@
 
 -(void)getWenkuIndex
 {
-    NSString *urlString = [NSString stringWithFormat:@"http://www.wenku8.cn/wap/article/articleinfo.php?id=%d",_bookId];
+    NSString *urlString = [NSString stringWithFormat:@"http://www.wenku8.com/wap/article/articleinfo.php?id=%d",_bookId];
     NSURL *url = [NSURL URLWithString:urlString];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:5];

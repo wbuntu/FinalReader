@@ -25,6 +25,18 @@
             [im addTarget:self action:@selector(didSelectedBg:) forControlEvents:UIControlEventTouchUpInside];
             [self addSubview:im];
         }
+//        UIButton *dec = [[UIButton alloc] initWithFrame:CGRectMake(30, 8, 100, 44)];
+//        [dec setTitle:@"A-" forState:UIControlStateNormal];
+//        [dec setTitleColor:[UIColor colorWithRed:0.0 green:91.0/255 blue:1.0 alpha:1.0] forState:UIControlStateNormal];
+//        [dec addTarget:self action:@selector(didChangeFs:) forControlEvents:UIControlEventTouchUpInside];
+//        dec.tag = 5;
+//        UIButton *inc = [[UIButton alloc] initWithFrame:CGRectMake(190, 8, 100, 44)];
+//        [inc setTitle:@"A+" forState:UIControlStateNormal];
+//        [inc setTitleColor:[UIColor colorWithRed:0.0 green:91.0/255 blue:1.0 alpha:1.0] forState:UIControlStateNormal];
+//        [inc addTarget:self action:@selector(didChangeFs:) forControlEvents:UIControlEventTouchUpInside];
+//        inc.tag = 6;
+//        [self addSubview:dec];
+//        [self addSubview:inc];
     }
     return self;
 }
@@ -33,9 +45,9 @@
 {
     self.bgColor = sender.tag;
 }
--(void)didChangeFs:(id)sender
+-(void)didChangeFs:(UIButton*)sender
 {
-    
+    NSLog(@"%d",sender.tag);
 }
 /*
 // Only override drawRect: if you perform custom drawing.

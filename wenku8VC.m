@@ -50,11 +50,12 @@ static NSString *identifier = @"cell";
 }
 -(void)getWenkuIndex
 {
-    NSURL *url = [NSURL URLWithString:@"http://www.wenku8.cn/wap/"];
+    NSURL *url = [NSURL URLWithString:@"http://www.wenku8.com/wap/"];
     NSError *error=nil;
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:5];
     NSData *received = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
-    if (error) {
+    if (error)
+    {
         
     }
 //    NSString *regex2 = @"<a(.*)>(.*)</a>";
@@ -108,7 +109,7 @@ static NSString *identifier = @"cell";
         }
         else
         {
-            NSString *bookImage = [NSString stringWithFormat:@"http://img.wenku8.cn/image/%d/%d/%ds.jpg",bookId/1000,bookId,bookId];
+            NSString *bookImage = [NSString stringWithFormat:@"http://img.wenku8.com/image/%d/%d/%ds.jpg",bookId/1000,bookId,bookId];
             NSURL *url = [NSURL URLWithString:bookImage];
             NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:5];
             [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
@@ -160,13 +161,13 @@ static NSString *identifier = @"cell";
     switch (sender.section)
     {
         case 0:
-            urlString = @"http://www.wenku8.cn/wap/article/toplist.php?class=0&sort=dayvisit&page=%d";
+            urlString = @"http://www.wenku8.com/wap/article/toplist.php?class=0&sort=dayvisit&page=%d";
             break;
         case 1:
-            urlString = @"http://www.wenku8.cn/wap/article/toplist.php?class=0&sort=lastupdate&page=%d";
+            urlString = @"http://www.wenku8.com/wap/article/toplist.php?class=0&sort=lastupdate&page=%d";
             break;
         case 2:
-            urlString = @"http://www.wenku8.cn/wap/article/toplist.php?class=0&sort=postdate&page=%d";
+            urlString = @"http://www.wenku8.com/wap/article/toplist.php?class=0&sort=postdate&page=%d";
             break;
         default:
             break;

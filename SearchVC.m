@@ -92,7 +92,7 @@ static NSString *identifier = @"cell";
         }
         else
         {
-            NSString *bookImage = [NSString stringWithFormat:@"http://img.wenku8.cn/image/%d/%d/%ds.jpg",bookId/1000,bookId,bookId];
+            NSString *bookImage = [NSString stringWithFormat:@"http://img.wenku8.com/image/%d/%d/%ds.jpg",bookId/1000,bookId,bookId];
             NSURL *url = [NSURL URLWithString:bookImage];
             NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:5];
             [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
@@ -130,7 +130,7 @@ static NSString *identifier = @"cell";
     [_indicator startAnimating];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSData *data = [currentKey dataUsingEncoding:NSUTF8StringEncoding];
-        NSString *urlString = @"http://www.wenku8.cn/wap/article/search.php";
+        NSString *urlString = @"http://www.wenku8.com/wap/article/search.php";
         NSURL *url = [NSURL URLWithString:urlString];
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
         [request setHTTPMethod:@"POST"];
