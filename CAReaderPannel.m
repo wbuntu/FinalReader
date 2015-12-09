@@ -2,7 +2,7 @@
 //  CAReaderPannel.m
 //  FinalReader
 //
-//  Created by 武鸿帅 on 15/6/8.
+//  Created by wbuntu on 15/6/8.
 //  Copyright (c) 2015年 wbuntu. All rights reserved.
 //
 

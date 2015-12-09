@@ -2,7 +2,7 @@
 //  downloadpageTableViewCell.h
 //  wenku8
 //
-//  Created by 武鸿帅 on 15/4/3.
+//  Created by wbuntu on 15/4/3.
 //  Copyright (c) 2015年 wbuntu. All rights reserved.
 //
 
