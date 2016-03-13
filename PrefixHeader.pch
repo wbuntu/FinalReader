@@ -22,14 +22,14 @@
 #define CAWAuthorUrl @"http://127.0.0.1:5000/api/author/"
 #define CAWPageSectionUrl @"http://127.0.0.1:5000/api/nextpage?"
 #else
-#define CAWImageUrl @"http://q.wbuntu.com/picture/%d.jpg"
-#define CAWTxteUrl @"http://q.wbuntu.com/txt/"
-#define CAWFirstPageUrl @"http://q.wbuntu.com:5000/api/firstpage"
-#define CAWSectionPageUrl @"http://q.wbuntu.com:5000/api/"
-#define CAWBookInfoUrl @"http://q.wbuntu.com:5000/api/book/%d"
-#define CAWTitleUrl @"http://q.wbuntu.com:5000/api/title/"
-#define CAWAuthorUrl @"http://q.wbuntu.com:5000/api/author/"
-#define CAWPageSectionUrl @"http://q.wbuntu.com:5000/api/nextpage?"
+#define CAWImageUrl @"http://119.29.40.36/picture/%d.jpg"
+#define CAWTxteUrl @"http://119.29.40.36/txt/"
+#define CAWFirstPageUrl @"http://119.29.40.36:5000/api/firstpage"
+#define CAWSectionPageUrl @"http://119.29.40.36:5000/api/"
+#define CAWBookInfoUrl @"http://119.29.40.36:5000/api/book/%d"
+#define CAWTitleUrl @"http://119.29.40.36:5000/api/title/"
+#define CAWAuthorUrl @"http://119.29.40.36:5000/api/author/"
+#define CAWPageSectionUrl @"http://119.29.40.36:5000/api/nextpage?"
 #endif
 
 #import "CAWNetwork.h"
