@@ -9,6 +9,8 @@
 #import <QuartzCore/QuartzCore.h>
 #import <UIKit/UIKit.h>
 @interface CAReaderLayer : CALayer
+@property(nonatomic,strong) UIColor *fontColor;
 -(instancetype)initWithFrame:(CGRect) frame;
 -(void)setNewStr:(NSAttributedString*)str;
+- (void)updateContent;
 @end

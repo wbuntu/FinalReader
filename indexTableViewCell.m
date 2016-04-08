@@ -38,9 +38,11 @@
 -(void)awakeFromNib
 {
     [super awakeFromNib];
+    /*
     _cover.layer.shadowOffset = CGSizeMake(2, 2);
     _cover.layer.shadowColor = [UIColor blackColor].CGColor;
     _cover.layer.shadowOpacity = 0.9;
+     */
 }
 -(void)setCellWithBook:(bookElement*)book
 {
@@ -64,21 +66,19 @@
     }
     else
     {
-        NSString *bookImage = [NSString stringWithFormat:@"http://img.wenku8.com/image/%d/%d/%ds.jpg",bookId/1000,bookId,bookId];
-        NSURL *url = [NSURL URLWithString:bookImage];
-        NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:5];
-        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-            [data writeToFile:path atomically:YES];
-            UIImage *im = [UIImage imageWithContentsOfFile:path];
-            //opaque：NO 不透明
-            UIGraphicsBeginImageContextWithOptions(CGSizeMake(60, 90), NO, 0.0);
-            [im drawInRect:CGRectMake(0, 0, 60, 90)];
-            UIImage *other = UIGraphicsGetImageFromCurrentImageContext();
-            UIGraphicsEndImageContext();
-            dispatch_async(dispatch_get_main_queue(), ^{
-                _cover.image = other;
-                _title.text = book.bookTitle;
-            });
+        NSString *bookImage = [NSString stringWithFormat:CAWImageUrl,bookId];
+        [[CAWNetwork defaultManager] dataTaskWithString:bookImage completionHandler:^(NSData *data) {
+                [data writeToFile:path atomically:YES];
+                UIImage *im = [UIImage imageWithContentsOfFile:path];
+                //opaque：NO 不透明
+                UIGraphicsBeginImageContextWithOptions(CGSizeMake(60, 90), NO, 0.0);
+                [im drawInRect:CGRectMake(0, 0, 60, 90)];
+                UIImage *other = UIGraphicsGetImageFromCurrentImageContext();
+                UIGraphicsEndImageContext();
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    _cover.image = other;
+                    _title.text = book.bookTitle;
+                });
         }];
     }
     

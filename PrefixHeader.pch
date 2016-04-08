@@ -22,8 +22,8 @@
 #define CAWAuthorUrl @"http://127.0.0.1:5000/api/author/"
 #define CAWPageSectionUrl @"http://127.0.0.1:5000/api/nextpage?"
 #else
-#define CAWImageUrl @"http://119.29.40.36/picture/%d.jpg"
-#define CAWTxteUrl @"http://119.29.40.36/txt/"
+#define CAWImageUrl @"http://119.29.40.36:80/picture/%d.jpg"
+#define CAWTxteUrl @"http://119.29.40.36:80/txt/"
 #define CAWFirstPageUrl @"http://119.29.40.36:5000/api/firstpage"
 #define CAWSectionPageUrl @"http://119.29.40.36:5000/api/"
 #define CAWBookInfoUrl @"http://119.29.40.36:5000/api/book/%d"

@@ -26,7 +26,7 @@ static NSString *identifier = @"cell";
     _volumeArray = [[manager.volumes objectForKey:_bookIdStr] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
         return [obj1 compare:obj2];
     }];
-
+    
 }
 
 - (void)didReceiveMemoryWarning {

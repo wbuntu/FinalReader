@@ -9,10 +9,10 @@
 #import "wenku8VC.h"
 #import "ShelfTVCCellCollectionViewCell.h"
 #import "bookElement.h"
-#import "parserIndex.h"
 #import "articleViewController.h"
 #import "ExrtaButton.h"
 #import "MoreVC.h"
+#import "CAWBook.h"
 @interface  wenku8VC()
 @property(nonatomic,strong) NSMutableArray *array;
 @property(nonatomic,strong) NSArray *titleArray;
@@ -33,43 +33,23 @@ static NSString *identifier = @"cell";
     [_indicator startAnimating];
     _titleArray = @[@"今日热榜",@"最近更新",@"新书榜单",@"每周推荐"];
     _imageDic = [NSMutableDictionary dictionary];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadData:) name:@"indexParseCompleted" object:nil];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         [self getWenkuIndex];
     });
     self.title = @"Wenku8";
 }
--(void)loadData:(NSNotification*)notification
-{
-    _array = [notification object];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"indexParseCompleted" object:nil];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [_indicator stopAnimating];
-        [self.collectionView reloadData];
-    });
-}
 -(void)getWenkuIndex
 {
-    NSURL *url = [NSURL URLWithString:@"http://www.wenku8.com/wap/"];
-    NSError *error=nil;
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:5];
-    NSData *received = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
-    if (error)
-    {
-        
-    }
-//    NSString *regex2 = @"<a(.*)>(.*)</a>";
-//    NSString *restring = [[NSString alloc] initWithData:received encoding:NSUTF8StringEncoding];
-//    NSRegularExpression *regexs2 = [NSRegularExpression regularExpressionWithPattern:regex2 options:0 error:nil];
-//    NSArray *arr = [regexs2 matchesInString:restring options:0 range:NSMakeRange(0, restring.length)];
-//    for (NSTextCheckingResult *match in arr ) {
-//        NSString *str = [restring substringWithRange:[match range]];
-//        NSLog(@"%@",str);
-//    }
-    NSXMLParser *parser = [[NSXMLParser alloc] initWithData:received];
-    parserIndex *delegate = [[parserIndex alloc] init];
-    parser.delegate=delegate;
-    [parser parse];
+    [[CAWNetwork defaultManager] dataTaskWithString:CAWFirstPageUrl completionHandler:^(NSData *data) {
+        NSData *received = data;
+        NSDictionary *rootDic = [NSJSONSerialization JSONObjectWithData:received options:NSJSONReadingAllowFragments error:nil];
+        NSDictionary *tempDic = [rootDic objectForKey:@"data"];
+        _array = [NSMutableArray arrayWithArray:[tempDic allValues]];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_indicator stopAnimating];
+            [self.collectionView reloadData];
+        });
+    }];
 }
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
@@ -85,35 +65,16 @@ static NSString *identifier = @"cell";
 {
     ShelfTVCCellCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     NSArray *arr = [_array objectAtIndex:indexPath.section];
-    bookElement *book = [arr objectAtIndex:indexPath.row];
-    cell.title.text = book.bookTitle;
-    cell.cover.image = [_imageDic objectForKey:[NSNumber numberWithInt:book.bookId]];
+    CAWBook *book = [[CAWBook alloc] initWithDictionary:arr[indexPath.row]];
+    cell.title.text = book.title;
+    cell.cover.image = [_imageDic objectForKey:book.bookId];
     if (cell.cover.image==nil) {
-        int bookId = book.bookId;
+        int bookId = [book.bookId intValue];
         NSString *path =[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
         path = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"cover/%ds.jpg",bookId]];
         NSFileManager *manager = [NSFileManager defaultManager];
         if ([manager fileExistsAtPath:path]) {
             dispatch_async(dispatch_get_global_queue(0, 0), ^{
-                UIImage *im = [UIImage imageWithContentsOfFile:path];
-                //opaque：NO 不透明
-                UIGraphicsBeginImageContextWithOptions(CGSizeMake(78, 117), NO, 0.0);                
-                [im drawInRect:CGRectMake(0, 0, 78, 117)];
-                UIImage *other = UIGraphicsGetImageFromCurrentImageContext();
-                UIGraphicsEndImageContext();
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    cell.cover.image = other;
-                    [_imageDic setObject:other forKey:[NSNumber numberWithInt:book.bookId]];
-                });
-            });
-        }
-        else
-        {
-            NSString *bookImage = [NSString stringWithFormat:@"http://img.wenku8.com/image/%d/%d/%ds.jpg",bookId/1000,bookId,bookId];
-            NSURL *url = [NSURL URLWithString:bookImage];
-            NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:5];
-            [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-                [data writeToFile:path atomically:YES];
                 UIImage *im = [UIImage imageWithContentsOfFile:path];
                 //opaque：NO 不透明
                 UIGraphicsBeginImageContextWithOptions(CGSizeMake(78, 117), NO, 0.0);
@@ -122,8 +83,25 @@ static NSString *identifier = @"cell";
                 UIGraphicsEndImageContext();
                 dispatch_async(dispatch_get_main_queue(), ^{
                     cell.cover.image = other;
-                    [_imageDic setObject:other forKey:[NSNumber numberWithInt:book.bookId]];
+                    [_imageDic setObject:other forKey:book.bookId];
                 });
+            });
+        }
+        else
+        {
+            NSString *bookImage = [NSString stringWithFormat:CAWImageUrl,bookId];
+            [[CAWNetwork defaultManager] dataTaskWithString:bookImage completionHandler:^(NSData *data) {
+                    [data writeToFile:path atomically:YES];
+                    UIImage *im = [UIImage imageWithContentsOfFile:path];
+                    //opaque：NO 不透明
+                    UIGraphicsBeginImageContextWithOptions(CGSizeMake(78, 117), NO, 0.0);
+                    [im drawInRect:CGRectMake(0, 0, 78, 117)];
+                    UIImage *other = UIGraphicsGetImageFromCurrentImageContext();
+                    UIGraphicsEndImageContext();
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        cell.cover.image = other;
+                        [_imageDic setObject:other forKey:book.bookId];
+                    });
             }];
         }
     }
@@ -131,8 +109,6 @@ static NSString *identifier = @"cell";
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    NSLog(@"%@",_imageDic);
-    NSLog(@"%lu",(unsigned long)_imageDic.count);
     // Dispose of any resources that can be recreated.
 }
 -(UICollectionReusableView*)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
@@ -147,10 +123,10 @@ static NSString *identifier = @"cell";
         if (indexPath.section==3)
             [button setHidden:YES];
         else
-            {
-                [button setHidden:NO];
-                [button addTarget:self action:@selector(pushToSearchWithSection:) forControlEvents:UIControlEventTouchUpInside];
-            }
+        {
+            [button setHidden:NO];
+            [button addTarget:self action:@selector(pushToSearchWithSection:) forControlEvents:UIControlEventTouchUpInside];
+        }
     }
     return view;
 }
@@ -161,13 +137,13 @@ static NSString *identifier = @"cell";
     switch (sender.section)
     {
         case 0:
-            urlString = @"http://www.wenku8.com/wap/article/toplist.php?class=0&sort=dayvisit&page=%d";
+            urlString = [CAWPageSectionUrl stringByAppendingString:@"sort=0&page=%d"];
             break;
         case 1:
-            urlString = @"http://www.wenku8.com/wap/article/toplist.php?class=0&sort=lastupdate&page=%d";
+            urlString = [CAWPageSectionUrl stringByAppendingString:@"sort=1&page=%d"];
             break;
         case 2:
-            urlString = @"http://www.wenku8.com/wap/article/toplist.php?class=0&sort=postdate&page=%d";
+            urlString = [CAWPageSectionUrl stringByAppendingString:@"sort=2&page=%d"];
             break;
         default:
             break;
@@ -182,10 +158,11 @@ static NSString *identifier = @"cell";
         ShelfTVCCellCollectionViewCell *cell = sender;
         NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
         NSArray *arr = [_array objectAtIndex:indexPath.section];
-        bookElement *book = [arr objectAtIndex:indexPath.row];
+        CAWBook *tempBook = [[CAWBook alloc] initWithDictionary:arr[indexPath.row]];
+        bookElement *book = [[bookElement alloc] init];
+        book.bookId = tempBook.bookId.intValue;
+        book.bookTitle = tempBook.title;
         [vc setWithObject:book];
     }
 }
 @end
-
-

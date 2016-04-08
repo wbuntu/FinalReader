@@ -10,6 +10,7 @@
 #import "CAReaderPannel.h"
 #import <CoreText/CoreText.h>
 #import "VolumeManager.h"
+#import "CAWThemeManager.h"
 @interface CAReaderVC()
 @property(nonatomic,strong) CAReaderLayer*ViewToD;
 @property(nonatomic,assign) NSInteger totalPage;
@@ -24,6 +25,7 @@
 @end
 
 @implementation CAReaderVC
+@synthesize bgColor;
 #pragma mark -- 视图部分
 -(void)viewDidLoad
 {
@@ -37,42 +39,46 @@
     [self.view.layer addSublayer:_ViewToD];
     
     NSNumber *bg = [[NSUserDefaults standardUserDefaults] objectForKey:@"bgColor"];
-    NSInteger bgColor;
     if (bg)
         bgColor = bg.integerValue;
     else
-        bgColor = 1;
-    [self drawNewBgWith:bgColor];
+        bgColor = 12;
     
-    _pannel = [[CAReaderPannel alloc] initWithFrame:CGRectMake(0, 476, 320, 92) Andbg:bgColor Andfs:16];
+    [CAWThemeManager changeCAWTextView:self toTheme:bgColor];
+    
+    _pannel = [[CAReaderPannel alloc] initWithFrame:CGRectMake(0, 438, 320, 130) Andbg:bgColor Andfs:16];
     [self.view addSubview:_pannel];
-    
     [_pannel addObserver:self forKeyPath:@"bgColor" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
-    
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapSelector:)];
     [self.view addGestureRecognizer:tap];
-}
--(void)drawNewBgWith:(NSInteger)bg
-{
-    UIImage *im = [UIImage imageNamed:[NSString stringWithFormat:@"reading_bg%ld.png",(long)bg]];
-    UIGraphicsBeginImageContextWithOptions(CGSizeMake(320, 568), NO, 0.0);
-    [im drawAsPatternInRect:CGRectMake(0, 0, 320, 568)];
-    self.view.layer.contents = (__bridge id)(CGBitmapContextCreateImage(UIGraphicsGetCurrentContext()));
-    UIGraphicsEndImageContext();
 }
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     if ([keyPath isEqualToString:@"bgColor"])
     {
-        [self drawNewBgWith:(long)_pannel.bgColor];
+        bgColor = _pannel.bgColor;
+        [CAWThemeManager changeCAWTextView:self toTheme:bgColor];
     }
 }
+
+
+- (void)setFontColor:(UIColor *)fontColor
+{
+    _ViewToD.fontColor = fontColor;
+    [_ViewToD updateContent];
+}
+
+- (UIColor *)fontColor
+{
+    return _ViewToD.fontColor;
+}
+
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [_indicator startAnimating];
-    _pannel.center = CGPointMake(160, 614);
+    _pannel.center = CGPointMake(160, 633);
     [self showBookWithPath:_path];
 }
 
@@ -80,15 +86,15 @@
 {
     [super viewWillDisappear:animated];
     _ViewToD.contents = nil;
-    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:_pannel.bgColor] forKey:@"bgColor"];
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:bgColor] forKey:@"bgColor"];
     [[VolumeManager defaultManager] addBookmarkWithBookId:[_bookPath lastPathComponent] AndCurrntPage:_currentPage];
 }
 #pragma mark -- 懒加载
 -(NSAttributedString*)attString
 {
     if (_attString == nil || _isNewBook) {
-        NSStringEncoding gbk = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
-        NSString *aText = [NSString stringWithContentsOfFile:_bookPath encoding:gbk error:nil];
+//        NSStringEncoding gbk = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
+        NSString *aText = [NSString stringWithContentsOfFile:_bookPath encoding:NSUTF8StringEncoding error:nil];
         NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
         style.lineSpacing = 0.0f;
         _attString = [[NSMutableAttributedString alloc] initWithString:aText attributes:@{NSFontAttributeName:[UIFont fontWithName:@"STHeitiSC-Light" size:16],NSParagraphStyleAttributeName:style}];
@@ -190,7 +196,7 @@
         if(!self.navigationController.isNavigationBarHidden)
         {
             [self.navigationController setNavigationBarHidden:YES animated:YES];
-            _pannel.center = CGPointMake(160, 614);
+            _pannel.center = CGPointMake(160, 633);
             _isStatusBarHidden=!_isStatusBarHidden;
             [self setNeedsStatusBarAppearanceUpdate];
             
@@ -206,7 +212,7 @@
         if(!self.navigationController.isNavigationBarHidden)
         {
             [self.navigationController setNavigationBarHidden:YES animated:YES];
-            _pannel.center = CGPointMake(160, 614);
+            _pannel.center = CGPointMake(160, 633);
             _isStatusBarHidden=!_isStatusBarHidden;
             [self setNeedsStatusBarAppearanceUpdate];
             
@@ -218,9 +224,9 @@
             BOOL isHidedn = !self.navigationController.isNavigationBarHidden;
             [self.navigationController setNavigationBarHidden:isHidedn animated:YES];
             if (isHidedn)
-                _pannel.center = CGPointMake(160, 614);
+                _pannel.center = CGPointMake(160, 633);
             else
-                _pannel.center = CGPointMake(160,522);
+                _pannel.center = CGPointMake(160,503);
             _isStatusBarHidden=!_isStatusBarHidden;
             [self setNeedsStatusBarAppearanceUpdate];
         }];

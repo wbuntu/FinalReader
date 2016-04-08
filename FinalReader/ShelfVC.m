@@ -33,8 +33,6 @@ static NSString *identifier = @"cell";
         return [obj1 compare:obj1];
     }];
     self.title=@"书架";
-//    [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:identifier];
-//    NSLog(@"%@",_bookIdStrArray);
     UILongPressGestureRecognizer *recognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(activateLongPress:)];
     recognizer.delegate=self;
     [self.view addGestureRecognizer:recognizer];

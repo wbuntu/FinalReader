@@ -11,4 +11,6 @@
 @interface CAReaderVC : UIViewController
 @property(nonatomic,strong) NSString *path;
 @property(nonatomic) BOOL isStatusBarHidden;
+@property(nonatomic,strong) UIColor *fontColor;
+@property(nonatomic,assign) NSInteger bgColor;
 @end

@@ -8,8 +8,8 @@
 
 #import "SearchVC.h"
 #import "indexTableViewCell.h"
-#import "parserSearchView.h"
 #import "articleViewController.h"
+#import "CAWBook.h"
 @interface SearchVC ()<UISearchBarDelegate>
 @property(nonatomic,strong) IBOutlet UISegmentedControl *segmentedControl;
 @property (strong, nonatomic) UISearchBar *searchBar;
@@ -22,7 +22,6 @@
 static NSString *identifier = @"cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadData:) name:@"searchViewParseCompleted" object:nil];
     self.title = @"搜索";
     _imageArray = [NSMutableDictionary dictionary];
     [self.tableView registerNib:[UINib nibWithNibName:@"indexTableViewCell" bundle:nil] forCellReuseIdentifier:identifier];
@@ -39,18 +38,6 @@ static NSString *identifier = @"cell";
     [self.view addSubview:_indicator];
 }
 
--(void)loadData:(NSNotification*)notification
-{
-    _bookArray = [notification object];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [_indicator stopAnimating];
-        [self.tableView reloadData];
-        if (_bookArray.count==0) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"木有结果" message:@"请简写关键词，比如搜索“妹”即可" delegate:nil cancelButtonTitle:@"确定 " otherButtonTitles:nil, nil];
-            [alert show];
-        }
-    });
-}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -67,7 +54,10 @@ static NSString *identifier = @"cell";
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     indexTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
-    bookElement *book = [_bookArray objectAtIndex:indexPath.row];
+    CAWBook *tempBook = [[CAWBook alloc] initWithDictionary:_bookArray[indexPath.row]];
+    bookElement *book = [[bookElement alloc] init];
+    book.bookId = tempBook.bookId.intValue;
+    book.bookTitle = tempBook.title;
     cell.title.text = book.bookTitle;
     //    UIImage *cellImage =
     cell.cover.image = [_imageArray objectForKey:[NSNumber numberWithInt:book.bookId]];
@@ -92,10 +82,8 @@ static NSString *identifier = @"cell";
         }
         else
         {
-            NSString *bookImage = [NSString stringWithFormat:@"http://img.wenku8.com/image/%d/%d/%ds.jpg",bookId/1000,bookId,bookId];
-            NSURL *url = [NSURL URLWithString:bookImage];
-            NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:5];
-            [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+            NSString *bookImage = [NSString stringWithFormat:CAWImageUrl,bookId];
+            [[CAWNetwork defaultManager] dataTaskWithString:bookImage completionHandler:^(NSData *data) {
                 [data writeToFile:path atomically:YES];
                 UIImage *im = [UIImage imageWithContentsOfFile:path];
                 //opaque：NO 不透明
@@ -103,11 +91,12 @@ static NSString *identifier = @"cell";
                 [im drawInRect:CGRectMake(0, 0, 60, 90)];
                 UIImage *other = UIGraphicsGetImageFromCurrentImageContext();
                 UIGraphicsEndImageContext();
-//                NSLog(@"xiazai");
+                //                NSLog(@"xiazai");
                 dispatch_async(dispatch_get_main_queue(), ^{
                     cell.cover.image = other;
                     [_imageArray setObject:other forKey:[NSNumber numberWithInt:book.bookId]];
                 });
+
             }];
         }
     }
@@ -116,38 +105,42 @@ static NSString *identifier = @"cell";
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    NSString *currentKey = [NSString stringWithFormat:@"action=search&searchkey=%@&searchtype=",[_searchBar text]];
+    NSString *currentKey = [_searchBar text];
+    NSString *baseUrl = nil;
     switch (_segmentedControl.selectedSegmentIndex) {
         case 0:
-            currentKey = [currentKey stringByAppendingString:@"articlename"];
+            baseUrl = CAWTitleUrl;
             break;
         case 1:
-            currentKey = [currentKey stringByAppendingString:@"author"];
+            baseUrl = CAWAuthorUrl;
         default:
             break;
     }
     [searchBar resignFirstResponder];
     [_indicator startAnimating];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSData *data = [currentKey dataUsingEncoding:NSUTF8StringEncoding];
-        NSString *urlString = @"http://www.wenku8.com/wap/article/search.php";
-        NSURL *url = [NSURL URLWithString:urlString];
-        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-        [request setHTTPMethod:@"POST"];
-        [request setHTTPBody:data];
-        NSData *received = [NSURLConnection sendSynchronousRequest:request returningResponse:nil    error:nil];
-       // NSLog(@"%@",[[NSString alloc] initWithData:received encoding:NSUTF8StringEncoding]);
-        parserSearchView *delegate = [[parserSearchView alloc] init];
-        delegate.isSearchView=YES;
-        NSXMLParser *parser = [[NSXMLParser alloc] initWithData:received];
-        parser.delegate=delegate;
-        [parser parse];
-    });
+    NSString *urlString = [baseUrl stringByAppendingString:currentKey];
+    [[CAWNetwork defaultManager] dataTaskWithString:urlString completionHandler:^(NSData *data) {
+        NSDictionary *temp = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+        _bookArray = temp[@"data"];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_indicator stopAnimating];
+            [self.tableView reloadData];
+            if (_bookArray.count==0) {
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"木有结果" message:@"请简写关键词，比如搜索“妹”即可" preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
+                [alert addAction:okAction];
+                [self presentViewController:alert animated:YES completion:nil];
+            }
+        });
+    }];
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     articleViewController *vc = [[self storyboard] instantiateViewControllerWithIdentifier:@"articleViewController"];
-    bookElement *book = [_bookArray objectAtIndex:indexPath.row];
+    CAWBook *tempBook = [[CAWBook alloc] initWithDictionary:_bookArray[indexPath.row]];
+    bookElement *book = [[bookElement alloc] init];
+    book.bookId = tempBook.bookId.intValue;
+    book.bookTitle = tempBook.title;
     [vc setWithObject:book];
     [self.navigationController pushViewController:vc animated:YES];
 }

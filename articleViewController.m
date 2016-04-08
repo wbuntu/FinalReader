@@ -7,12 +7,10 @@
 //
 
 #import "articleViewController.h"
-#import "parserArticleinfo.h"
 #import "articleDownloadViewController.h"
-
+#import "CAWBook.h"
 @interface articleViewController ()
 
-//@property (nonatomic,strong) UITableView *tableView;
 @property (nonatomic,strong) NSString *intro;
 @property (nonatomic,strong) NSString *author;
 @property (nonatomic,strong) NSString *classType;
@@ -25,63 +23,43 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     _indicator = [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake(CGRectGetMidX(self.view.frame)-40, CGRectGetMidY(self.view.frame)-40, 80, 80)];
     _indicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
     [self.view addSubview:_indicator];
-    [_indicator startAnimating];
     NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
     path = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"articleInfo/%d",_bookId]];
-    NSFileManager *manager = [NSFileManager defaultManager];
-    if ([manager fileExistsAtPath:path]) {
-        NSDictionary *dic = [NSDictionary dictionaryWithContentsOfFile:path];
-        _intro = [dic objectForKey:@"intro"];
-        _author = [dic objectForKey:@"author"];
-        _classType  = [dic objectForKey:@"classtype"];
-        _height = [[dic objectForKey:@"height"] floatValue];
-        [_indicator stopAnimating];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
+        NSDictionary *dic = [[NSDictionary alloc] initWithContentsOfFile:path];
+        CAWBook *book = [[CAWBook alloc] initWithDictionary:dic];
+        _bookTitle = book.title;
+        _intro = book.summary;
+        _author = book.author;
+        _classType = book.sortlist;
+        CGSize labelSize = [_intro boundingRectWithSize:CGSizeMake(304, 999) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil].size;
+        _height=ceilf(labelSize.height);
+    }else
+    {
+        [self getBookInfo];
     }
-    else
-        dispatch_async(dispatch_get_global_queue(0, 0), ^{
-            [self getWenkuIndex];
-        });
-    
 }
 
--(void)getWenkuIndex
+-(void)getBookInfo
 {
-    NSString *urlString = [NSString stringWithFormat:@"http://www.wenku8.com/wap/article/articleinfo.php?id=%d",_bookId];
-    NSURL *url = [NSURL URLWithString:urlString];
-    
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:5];
-    NSData *received = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-    NSString *regex = @"<[^>]+>|\\s|&[^;]+;";
-    NSString *restring = [[NSString alloc] initWithData:received encoding:NSUTF8StringEncoding];
-    NSRegularExpression *regexs = [NSRegularExpression regularExpressionWithPattern:regex options:0 error:nil];
-    NSString *currentString = [regexs stringByReplacingMatchesInString:restring options:0 range:NSMakeRange(0, restring.length) withTemplate:@""];
-    //    currentString = [currentString stringByReplacingOccurrencesOfString:@"&nbsp;" withString:@""];
-    //    NSLog(@"%@",currentString);
-    NSRange ra1 = [currentString rangeOfString:@"作者:"];
-    NSRange ra2 = [currentString rangeOfString:@"类别"];
-    NSRange ra = NSMakeRange(ra1.location+3, ra2.location-ra1.location-3);
-    _author = [currentString substringWithRange:ra];
-    
-    ra1 = [currentString rangeOfString:@"[作品简介]"];
-    ra2 = [currentString rangeOfString:@"联系管理员"];
-    ra = NSMakeRange(ra1.location+6, ra2.location-ra1.location-6);
-    _intro = [currentString substringWithRange:ra];
-    
-    ra1 = [currentString rangeOfString:@"类别:"];
-    ra2 = [currentString rangeOfString:@"状态:"];
-    ra = NSMakeRange(ra1.location+3, ra2.location-ra1.location-3);
-    _classType = [currentString substringWithRange:ra];
-    //NSLog(@"\n%@\n%@\n%@",_author,_intro,_classType);
-    CGSize labelSize = [_intro boundingRectWithSize:CGSizeMake(304, 999) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil].size;
-    _height=ceilf(labelSize.height);
-    NSDictionary *dic = @{@"intro":_intro,@"author":_author,@"classtype":_classType,@"height":[NSNumber numberWithFloat:_height]};
+    [_indicator startAnimating];
+    NSURL *queryUrl = [NSURL URLWithString:[NSString stringWithFormat:CAWBookInfoUrl,_bookId]];
+    //strong-weak dance
+    NSData *data = [NSData dataWithContentsOfURL:queryUrl];
+    NSDictionary *rootDic = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+    NSArray *arr = [rootDic objectForKey:@"data"];
+    CAWBook *book = [[CAWBook alloc] initWithDictionary:arr[0]];
     NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
     path = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"articleInfo/%d",_bookId]];
-    [dic writeToFile:path atomically:YES];
+    [arr[0] writeToFile:path atomically:YES];
+    _bookTitle = book.title;
+    _intro = book.summary;
+    _author = book.author;
+    CGSize labelSize = [_intro boundingRectWithSize:CGSizeMake(304, 999) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14]} context:nil].size;
+    _height=ceilf(labelSize.height);
     dispatch_async(dispatch_get_main_queue(), ^{
         [_indicator stopAnimating];
         [self.tableView reloadData];
@@ -115,8 +93,6 @@
             NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
             path = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"cover/%ds.jpg",_bookId]];
             imageView.image = [UIImage imageWithContentsOfFile:path];
-//            imageView.layer.cornerRadius = 6.0f;
-//            imageView.layer.masksToBounds = YES;
             imageView.layer.shadowOffset = CGSizeMake(2, 2);
             imageView.layer.shadowColor = [UIColor blackColor].CGColor;
             imageView.layer.shadowOpacity = 0.9f;
@@ -134,9 +110,6 @@
             
             UILabel *authorLabel = (UILabel*)[cell viewWithTag:3];
             authorLabel.text=_author;
-            
-            UILabel *classTypeLabel = (UILabel*)[cell viewWithTag:4];
-            classTypeLabel.text=_classType;
             
         }
             break;
