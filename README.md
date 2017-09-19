@@ -8,7 +8,7 @@ a wenku8 Reader
 
 本应用只是一个基于个人爱好所写的iOS小应用，除代码内容属于本人所有，供爱好者学习交流，其余文字、图片、文档内容信息均归轻小说文库（www.wenku8.com）解释与所有，请勿用于商业用途。
 
-详细内容可以访问[wbuntu的博客](http://wbuntu.com/wordpress/?p=146)
+详细内容可以访问[wbuntu的博客](http://wbuntu.com/p/146)
 
 支持的设备：iPhone5系列，包括iPod Touch5
 
